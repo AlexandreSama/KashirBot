@@ -1,0 +1,19 @@
+{
+  "name": "tweedemy",
+  "version": "0.0.1",
+  "description": "A Bot/App for the Server Helios Academy",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexandre",
+  "license": "ISC",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.29",
+    "discord-akairo": "npm:@notenoughupdates/discord-akairo@^10.0.0-dev.1661396495.d2761d1",
+    "discord.js": "^14.1.2",
+    "illustrator.js": "^0.3.4",
+    "mysql2": "^2.3.3",
+    "nodejs-file-downloader": "^4.10.2"
+  }
+}
