@@ -258,6 +258,7 @@ async function listRoleplayers(interaction, client) {
                         value: element.personnagePrenom
                     })
                     await dropdown.setOptions(optionsFull)
+                    console.log(dropdown)
                     await interaction.reply({components: [row]})
                 }else{
                     while (i <= 5) {
@@ -305,29 +306,28 @@ async function getSpecificCharacter(characterName, interaction, client) {
             }
 
             if(result){
-                console.log(result[0])
-                // let infos = result[0].
-                // const embedInfos = new EmbedBuilder()
-                // .setAuthor({name: client.user.username, iconURL: client.user.avatarURL({
-                //     extension: "jpg",
-                // })})
-                // .setTitle("Présentation de " + characterName)
-                // .addFields({
-                //     name: "Nom :",
-                //     value: infos.personnageNom,
-                //     inline: true
-                // },{
-                //     name: "Prénom : ",
-                //     value: infos.personnagePrenom,
-                //     inline: true
-                // },{
-                //     name: "Personnage de : ",
-                //     value: client.users.cache.get(infos.userID),
-                //     inline: true
-                // })
-                // .setImage('http://193.168.146.71/KashirBot/src/roleplay/personnages/images/' + infos.personnagePrenom + '/' + infos.personnagePrenom + '.jpg')
+                let infos = result[0]
+                const embedInfos = new EmbedBuilder()
+                .setAuthor({name: client.user.username, iconURL: client.user.avatarURL({
+                    extension: "jpg",
+                })})
+                .setTitle("Présentation de " + characterName)
+                .addFields({
+                    name: "Nom :",
+                    value: infos.personnageNom,
+                    inline: true
+                },{
+                    name: "Prénom : ",
+                    value: infos.personnagePrenom,
+                    inline: true
+                },{
+                    name: "Personnage de : ",
+                    value: client.users.cache.get(infos.userID).username,
+                    inline: true
+                })
+                .setImage('http://193.168.146.71/KashirBot/src/roleplay/personnages/images/' + infos.personnagePrenom + '/' + infos.personnagePrenom + '.jpg')
 
-                // await interaction.reply({embeds: [embedInfos]})
+                await interaction.reply({embeds: [embedInfos]})
             }
         })
 }
