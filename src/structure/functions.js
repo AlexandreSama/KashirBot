@@ -305,6 +305,7 @@ async function getSpecificCharacter(characterName, interaction, client) {
             }
 
             if(result){
+                let infos = result[0]
                 const embedInfos = new EmbedBuilder()
                 .setAuthor({name: client.user.username, iconURL: client.user.avatarURL({
                     extension: "jpg",
@@ -312,18 +313,18 @@ async function getSpecificCharacter(characterName, interaction, client) {
                 .setTitle("Présentation de " + characterName)
                 .addFields({
                     name: "Nom :",
-                    value: result[0]['personnageNom'],
+                    value: infos.personnageNom,
                     inline: true
                 },{
                     name: "Prénom : ",
-                    value: result[0]['personnagePrenom'],
+                    value: infos.personnagePrenom,
                     inline: true
                 },{
                     name: "Personnage de : ",
-                    value: client.users.cache.get(result[0]['userID']),
+                    value: client.users.cache.get(infos.userID),
                     inline: true
                 })
-                .setImage('http://193.168.146.71/KashirBot/src/roleplay/personnages/images/' + result[0]['personnagePrenom'] + '/' + result[0]['personnagePrenom'] + '.jpg')
+                .setImage('http://193.168.146.71/KashirBot/src/roleplay/personnages/images/' + infos.personnagePrenom + '/' + infos.personnagePrenom + '.jpg')
 
                 await interaction.reply({embeds: [embedInfos]})
             }
