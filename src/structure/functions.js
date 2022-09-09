@@ -18,6 +18,7 @@ const Downloader = require('nodejs-file-downloader')
 const connection =  mysql2.createConnection({
     host: config.databaseHost,
     user: config.databaseUsername,
+    password: config.databasePassword,
     database: config.databaseName,
     supportBigNumbers: true
 });
