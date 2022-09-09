@@ -44,6 +44,12 @@ class interactionCreateListener extends Listener{
                     functions.validerFiche(interaction)
                 break;
             }
+        }else if (interaction.isSelectMenu()){
+            console.log(interaction)
+            if(interaction.customId == "listPersoRP"){
+                let perso = interaction.values[0]
+                functions.getSpecificCharacter(perso, interaction, this.client)
+            }
         }
     }
 }

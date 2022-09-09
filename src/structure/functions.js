@@ -9,6 +9,7 @@ const {
     ChannelType,
     PermissionFlagsBits,
     ThreadAutoArchiveDuration,
+    SelectMenuBuilder,
 } = require('discord.js');
 const Canvas = require('@napi-rs/canvas')
 const Downloader = require('nodejs-file-downloader')
@@ -214,34 +215,49 @@ async function listRoleplayers(interaction, client) {
         }else{
             console.log(client)
             let i = 0
-            const embedList = new EmbedBuilder()
-                .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
-                .setDescription('**Voici la liste des personnages-joueurs du RP !**')
-                .setTimestamp()
-                .setFooter({text: "Made By Kashir With Love", iconURL: client.user.displayAvatarURL()})
+
+            const row = new ActionRowBuilder()
+                .addComponents(
+                    new SelectMenuBuilder()
+                        .setCustomId('listPersoRP')
+                        .setPlaceholder('Liste des personnages du RP')
+                )
+
+            let dropdown = row.components[0]
+            let optionsFull = []
 
             result.forEach(async (element) => {
                 if(result.length <= 5){
-                    embedList.addFields({
-                        name: '\u200B',
-                        value: '\u200B'
-                    },{
-                        name: 'Personnage de : ',
-                        value: client.users.cache.get(element.userID).username
-                    },{
-                        name: "Nom / Prénom du personnage : ",
-                        value: element.personnageNom + ' / ' + element.personnagePrenom,
-                        inline: true
-                    }, {
-                        name: 'Lien vers la fiche du personnage : ',
-                        value: element.lienFichePersonnage,
-                        inline: true
-                    },{
-                        name: '\u200B',
-                        value: '-----------------------'
-                    })
+                    // embedList.addFields({
+                    //     name: '\u200B',
+                    //     value: '\u200B'
+                    // },{
+                    //     name: 'Personnage de : ',
+                    //     value: client.users.cache.get(element.userID).username
+                    // },{
+                    //     name: "Nom / Prénom du personnage : ",
+                    //     value: element.personnageNom + ' / ' + element.personnagePrenom,
+                    //     inline: true
+                    // },{
+                    //     name: 'Lien vers la fiche du personnage : ',
+                    //     value: element.lienFichePersonnage,
+                    //     inline: true
+                    // },{
+                    //     name: 'Photo du personnage : ',
+                    //     value: config.website + '/roleplay/personnages/images/' + element.personnagePrenom + '/' + element.personnagePrenom + '.jpg',
+                    // },{
+                    //     name: '\u200B',
+                    //     value: '-----------------------'
+                    // })
 
-                    interaction.reply({embeds: [embedList]})
+                    console.log(element)
+                    optionsFull.push({
+                        label: element.personnageNom + ' ' + element.personnagePrenom,
+                        description: 'Personnage de ' + client.users.cache.get(element.userID).username,
+                        value: element.personnagePrenom
+                    })
+                    await dropdown.setOptions(optionsFull)
+                    await interaction.reply({components: [row]})
                 }else{
                     while (i <= 5) {
                         embedList.addFields({
@@ -274,11 +290,43 @@ async function listRoleplayers(interaction, client) {
                             .setEmoji('▶️')
                     )
 
-                    interaction.reply({embeds: [embedList], components: [row]})
+                    await interaction.reply({embeds: [embedList], components: [row]})
                 }
             })
         }
     })
+}
+
+async function getSpecificCharacter(characterName, interaction, client) {
+        connection.query(`SELECT * FROM roleplayers WHERE personnagePrenom = "${characterName}"`, async function(err, result){
+            if(err){
+                console.log(err)
+            }
+
+            if(result){
+                const embedInfos = new EmbedBuilder()
+                .setAuthor({name: client.user.username, iconURL: client.user.avatarURL({
+                    extension: "jpg",
+                })})
+                .setTitle("Présentation de " + characterName)
+                .addFields({
+                    name: "Nom :",
+                    value: result[0]['personnageNom'],
+                    inline: true
+                },{
+                    name: "Prénom : ",
+                    value: result[0]['personnagePrenom'],
+                    inline: true
+                },{
+                    name: "Personnage de : ",
+                    value: client.users.cache.get(result[0]['userID']),
+                    inline: true
+                })
+                .setImage('http://193.168.146.71/KashirBot/src/roleplay/personnages/images/' + result[0]['personnageNom'] + '/' + result[0]['personnageNom'] + '.jpg')
+
+                await interaction.reply({embeds: [embedInfos]})
+            }
+        })
 }
 module.exports = {
     connection,
@@ -286,5 +334,6 @@ module.exports = {
     createTicket,
     refuserFiche,
     validerFiche,
-    listRoleplayers
+    listRoleplayers,
+    getSpecificCharacter
 }

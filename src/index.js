@@ -16,6 +16,10 @@ process.on('uncaughtException', error => {
     console.log(error)
 })
 
+client.on('error', (err) => {
+    console.log(err)
+})
+
 console.log("Version de Discord-Akairo (Framework pour DJS) : " + require('discord-akairo').version)
 console.log('Version de DJS : ' + Discord.version)
 console.log('Version de MySQL2 : 2.3.3')
@@ -42,7 +46,7 @@ ctx.fillStyle = '#000000'
 ctx.font = '60px Arial'
 ctx.fillText('Alexandre', 200, 450)
 
-Canvas.loadImage('./src/left-arrow.png').then((data) => {
+Canvas.loadImage('./src/img/left-arrow.png').then((data) => {
     ctx.drawImage(data, 90, 50, 150, 150)
     let imgBuffer = canva.toBuffer('image/png')
     fs.writeFileSync('simple.png', imgBuffer)
