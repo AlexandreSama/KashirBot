@@ -190,7 +190,7 @@ function validerFiche(interaction, nomPersonnage, prenomPersonnage, lienPersonna
 
             const downloadPhotoPersonnage = new Downloader({
                 url: personnagePhoto,
-                directory: process.cwd() + '\\src\\roleplay\\personnages\\images\\' + personnageLastName + '\\',
+                directory: process.cwd() + '\\roleplay\\personnages\\images\\' + personnageLastName + '\\',
                 fileName: personnageLastName + '.jpg'
             })
 

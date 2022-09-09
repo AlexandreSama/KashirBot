@@ -1,3 +1,4 @@
 /node_modules
 /simple.png
 /src/config.json
+/src/structure/client.js
