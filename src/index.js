@@ -46,7 +46,7 @@ ctx.fillStyle = '#000000'
 ctx.font = '60px Arial'
 ctx.fillText('Alexandre', 200, 450)
 
-Canvas.loadImage('./src/img/left-arrow.png').then((data) => {
+Canvas.loadImage(__dirname + '/img/left-arrow.png').then((data) => {
     ctx.drawImage(data, 90, 50, 150, 150)
     let imgBuffer = canva.toBuffer('image/png')
     fs.writeFileSync('simple.png', imgBuffer)
